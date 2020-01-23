@@ -1,17 +1,17 @@
-package com.t.randomuserapp
+package com.t.randomuserapp.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.t.randomuserapp.adapter.MainAdapter
-import com.t.randomuserapp.data.Result
-import com.t.randomuserapp.factory.ApiService
+import com.arellomobile.mvp.MvpAppCompatActivity
+import com.t.randomuserapp.R
+import com.t.randomuserapp.entity.User
+import com.t.randomuserapp.network.services.UsersServices
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainScreen : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity(), MainView {
     private val mainAdapter = MainAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,29 +21,26 @@ class MainScreen : AppCompatActivity() {
         recyclerCards.layoutManager = LinearLayoutManager(this)
         recyclerCards.adapter = mainAdapter
 
-        ApiService.getApi().getRandomUser()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { mainAdapter.setData(it.results) },
-                { it.printStackTrace() }
-            )
+
 
         fabAdd.setOnClickListener {
-            ApiService.getApi().getSoloRandomUser()
+            UsersServices.getApi().getSoloRandomUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    { addUser(it.results.first()) },
+                    { addUser(it.users.first()) },
                     { it.printStackTrace() }
                 )
         }
     }
 
-
-    private fun addUser(result: Result) {
-        mainAdapter.addItem(result)
+    override fun addUser(user: User) {
+        mainAdapter.addItem(user)
         recyclerCards.scrollToPosition(mainAdapter.itemCount - 1)
+    }
+
+    override fun loadUser() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 

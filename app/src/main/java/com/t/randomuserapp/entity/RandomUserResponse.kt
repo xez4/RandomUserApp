@@ -1,9 +1,9 @@
-package com.t.randomuserapp.data
+package com.t.randomuserapp.entity
 
 
 import com.google.gson.annotations.SerializedName
 
 data class RandomUserResponse(
     @SerializedName("results")
-    val results: MutableList<Result>
+    val users: MutableList<User>
 )

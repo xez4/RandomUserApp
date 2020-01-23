@@ -1,4 +1,4 @@
-package com.t.randomuserapp.viewholders
+package com.t.randomuserapp.main.inner_list
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

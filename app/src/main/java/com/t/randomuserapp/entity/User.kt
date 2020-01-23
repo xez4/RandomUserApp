@@ -1,8 +1,8 @@
-package com.t.randomuserapp.data
+package com.t.randomuserapp.entity
 
 import com.google.gson.annotations.SerializedName
 
-data class Result(
+data class User(
     @SerializedName("cell")
     val cell: String,
     @SerializedName("dob")
