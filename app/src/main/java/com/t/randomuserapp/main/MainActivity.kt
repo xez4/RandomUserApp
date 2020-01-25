@@ -3,6 +3,7 @@ package com.t.randomuserapp.main
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.MvpAppCompatActivity
+import com.arellomobile.mvp.presenter.InjectPresenter
 import com.t.randomuserapp.R
 import com.t.randomuserapp.entity.User
 import com.t.randomuserapp.network.services.UsersServices
@@ -12,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : MvpAppCompatActivity(), MainView {
+    @InjectPresenter
+    lateinit var mainPresenter: MainPresenter
     private val mainAdapter = MainAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,17 +35,19 @@ class MainActivity : MvpAppCompatActivity(), MainView {
                     { it.printStackTrace() }
                 )
         }
-    }
 
+    }
     override fun addUser(user: User) {
         mainAdapter.addItem(user)
         recyclerCards.scrollToPosition(mainAdapter.itemCount - 1)
     }
 
     override fun loadUser() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mainAdapter.addItem(user)
+        recyclerCards.scrollToPosition(mainAdapter.itemCount - 1)
     }
-}
 
+
+}
 
 
