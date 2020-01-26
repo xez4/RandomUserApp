@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
-interface UsersServices {
+interface UserService {
 
     @GET("/api/")
     fun getSoloRandomUser(): Single<RandomUserResponse>
@@ -19,11 +19,11 @@ interface UsersServices {
 
     companion object {
         private const val BASE_URL = "https://randomuser.me"
-        fun getApi(): UsersServices = Retrofit.Builder()
+        fun getApi(): UserService = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-            .create(UsersServices::class.java)
+            .create(UserService::class.java)
     }
 }

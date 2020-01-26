@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.t.randomuserapp.R
-import com.t.randomuserapp.main.inner_list.ItemListViewHolder
 
 
 class ItemListAdapter(private val items: Array<String>) :

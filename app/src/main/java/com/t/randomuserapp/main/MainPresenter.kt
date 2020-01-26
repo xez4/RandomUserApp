@@ -1,21 +1,34 @@
 package com.t.randomuserapp.main
 
-import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
-import com.t.randomuserapp.network.services.UsersServices
+import com.t.randomuserapp.network.services.UserService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-
+import moxy.InjectViewState
+import moxy.MvpPresenter
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainView>() {
-    private var mainAdapter = MainAdapter()
-    fun loadUser() {
-        UsersServices.getApi().getRandomUser()
+
+    private val mainAdapter = MainAdapter()
+    fun loadUsers() {
+        UserService.getApi().getRandomUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { mainAdapter.setData(it.users) },
+                {
+                    viewState.showUsers(mainAdapter)
+                    mainAdapter.setData(it.users)
+                },
+                { it.printStackTrace() }
+            )
+    }
+
+    fun loadUser() {
+        UserService.getApi().getRandomUser()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { viewState.addUser(mainAdapter, it.users.first()) },
                 { it.printStackTrace() }
             )
     }

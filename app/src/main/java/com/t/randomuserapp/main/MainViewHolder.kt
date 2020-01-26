@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.t.randomuserapp.main.inner_list.ItemListAdapter
+import com.t.randomuserapp.R
 import com.t.randomuserapp.entity.User
+import com.t.randomuserapp.main.inner_list.ItemListAdapter
 import kotlinx.android.synthetic.main.item_list.view.*
 
 class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,13 +29,15 @@ class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             .into(imageView)
 
 
-        when (item.nat) {
-            "LEGO" -> card.setCardBackgroundColor(ContextCompat.getColor(
-                context, android.R.color.holo_orange_light
-            ))
-            else -> card.setCardBackgroundColor(
+        when (item.gender) {
+            "male" -> card.setCardBackgroundColor(
                 ContextCompat.getColor(
-                    context, android.R.color.holo_green_light
+                    context, R.color.transBlue
+                )
+            )
+            "female" -> card.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    context, R.color.transPink
                 )
             )
         }
