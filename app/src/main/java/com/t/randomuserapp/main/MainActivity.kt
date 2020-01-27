@@ -1,12 +1,14 @@
 package com.t.randomuserapp.main
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.t.randomuserapp.R
 import com.t.randomuserapp.entity.User
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
+
 
 class MainActivity : MvpAppCompatActivity(), MainView {
     @InjectPresenter
@@ -18,6 +20,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         recyclerCards.layoutManager = LinearLayoutManager(this)
 
         mainPresenter.loadUsers()
+
         fabAdd.setOnClickListener { mainPresenter.loadUser() }
     }
 
@@ -28,5 +31,16 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun showUsers(mainAdapter: MainAdapter) {
         recyclerCards.adapter = mainAdapter
+    }
+
+    override fun showError() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Something went wrong")
+            .setMessage("Check your internet connection")
+            .setCancelable(false)
+            .setNegativeButton("Retry") { dialog, _ -> mainPresenter.loadUsers()
+                dialog.cancel() }
+        val alert = builder.create()
+        alert.show()
     }
 }
