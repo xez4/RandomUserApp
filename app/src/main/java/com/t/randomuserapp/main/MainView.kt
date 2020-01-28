@@ -1,14 +1,13 @@
 package com.t.randomuserapp.main
 
-import com.t.randomuserapp.entity.User
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface MainView : MvpView {
-    fun addUser(mainAdapter: MainAdapter, user: User)
-    fun showUsers(mainAdapter: MainAdapter)
+    fun scrollToPosition(position: Int)
+    fun initAdapter(mainAdapter: MainAdapter)
     fun showError()
 
 }

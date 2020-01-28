@@ -4,15 +4,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.t.randomuserapp.R
-import com.t.randomuserapp.entity.User
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
+import org.koin.android.ext.android.get
 
 
 class MainActivity : MvpAppCompatActivity(), MainView {
     @InjectPresenter
     lateinit var mainPresenter: MainPresenter
+
+    @ProvidePresenter
+    fun provideMainPresenter() = get<MainPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +28,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         fabAdd.setOnClickListener { mainPresenter.loadUser() }
     }
 
-    override fun addUser(mainAdapter: MainAdapter, user: User) {
-        mainAdapter.addItem(user)
-        recyclerCards.scrollToPosition(mainAdapter.itemCount - 1)
+    override fun scrollToPosition(position: Int) {
+        recyclerCards.scrollToPosition(position)
     }
 
-    override fun showUsers(mainAdapter: MainAdapter) {
+    override fun initAdapter(mainAdapter: MainAdapter) {
         recyclerCards.adapter = mainAdapter
     }
 
@@ -38,8 +41,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         builder.setTitle("Something went wrong")
             .setMessage("Check your internet connection")
             .setCancelable(false)
-            .setNegativeButton("Retry") { dialog, _ -> mainPresenter.loadUsers()
-                dialog.cancel() }
+            .setNegativeButton("Retry") { dialog, _ ->
+                mainPresenter.loadUsers()
+                dialog.cancel()
+            }
         val alert = builder.create()
         alert.show()
     }

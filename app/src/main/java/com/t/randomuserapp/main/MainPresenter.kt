@@ -5,31 +5,33 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
-import java.util.concurrent.TimeUnit
 
 @InjectViewState
-class MainPresenter : MvpPresenter<MainView>() {
+class MainPresenter(private val userService: UserService) : MvpPresenter<MainView>() {
 
     private val mainAdapter = MainAdapter()
     fun loadUsers() {
-        UserService.getApi().getRandomUser()
+        userService.getRandomUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    viewState.showUsers(mainAdapter)
+                    viewState.initAdapter(mainAdapter)
                     mainAdapter.setData(it.users)
                 },
-                {viewState.showError()}
+                { viewState.showError() }
             )
     }
 
     fun loadUser() {
-        UserService.getApi().getSoloRandomUser()
+        userService.getSoloRandomUser()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { viewState.addUser(mainAdapter, it.users.first()) },
+                {
+                    mainAdapter.addItem(it.users.first())
+                    viewState.scrollToPosition(mainAdapter.itemCount - 1)
+                },
                 { viewState.showError() }
             )
     }

@@ -1,6 +1,7 @@
 package com.t.randomuserapp.network.services
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.t.randomuserapp.Constants.BASE_URL
 import com.t.randomuserapp.entity.RandomUserResponse
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -17,13 +18,4 @@ interface UserService {
     @GET("/api/?results=5")
     fun getRandomUser(): Single<RandomUserResponse>
 
-    companion object {
-        private const val BASE_URL = "https://randomuser.me"
-        fun getApi(): UserService = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-            .create(UserService::class.java)
-    }
 }
